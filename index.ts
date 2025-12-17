@@ -2,9 +2,9 @@ import { createMCPServer } from "mcp-use/server";
 import type { RawHtmlUIResource, RemoteDomUIResource } from "mcp-use/server";
 
 // Create an MCP server with MCP-UI UIResource support
-const server = createMCPServer("uiresource-mcp-server", {
+const server = createMCPServer("global-teammint-widget", {
   version: "1.0.0",
-  description: "MCP server demonstrating all UIResource types",
+  description: "Global Team Mint Widget - A modern date & time picker with global timezone support",
   baseUrl: process.env.MCP_URL, // Full base URL (e.g., https://myserver.com)
   // favicon: "favicon.ico", // Uncomment and add your favicon to public/ folder
 });
@@ -20,9 +20,12 @@ const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
  * All React components in the `resources/` folder are automatically registered as MCP tools and resources.
  *
  * This automatically:
- * 1. Creates a tool (kanban-board) that accepts parameters
- * 2. Creates a resource (ui://widget/kanban-board) for static access
- * 3. Serves the widget from dist/resources/mcp-use/widgets/kanban-board/
+ * 1. Creates a tool (global-time-picker) that accepts parameters
+ * 2. Creates a resource (ui://widget/global-time-picker) for static access
+ * 3. Serves the widget from dist/resources/mcp-use/widgets/global-time-picker/
+ *
+ * Additional widgets:
+ * - kanban-board: Project management board
  */
 
 /**
@@ -265,6 +268,13 @@ server.tool(
   async () => {
     const widgets = [
       {
+        name: "global-time-picker",
+        type: "externalUrl",
+        tool: "global-time-picker",
+        resource: "ui://widget/global-time-picker",
+        url: `http://localhost:${PORT}/mcp-use/widgets/global-time-picker`,
+      },
+      {
         name: "kanban-board",
         type: "externalUrl",
         tool: "kanban-board",
@@ -325,9 +335,9 @@ server.resource({
             port: PORT,
             version: "1.0.0",
             widgets: {
-              total: 3,
+              total: 4,
               types: {
-                externalUrl: ["kanban-board"],
+                externalUrl: ["global-time-picker", "kanban-board"],
                 rawHtml: ["welcome-card"],
                 remoteDom: ["quick-poll"],
               },
@@ -353,7 +363,7 @@ server.listen(PORT);
 // Display helpful startup message
 console.log(`
 ╔═══════════════════════════════════════════════════════════════╗
-║            🎨 UIResource MCP Server (All Types)                ║
+║            🌍 Global Team Mint Widget Server                   ║
 ╚═══════════════════════════════════════════════════════════════╝
 
 Server is running on port ${PORT}
@@ -363,42 +373,42 @@ Server is running on port ${PORT}
    Inspector UI:  http://localhost:${PORT}/inspector
    Widgets Base:  http://localhost:${PORT}/mcp-use/widgets/
 
-🎯 Available UIResources (3 types demonstrated):
+🎯 Available UIResources (4 widgets):
 
-   1️⃣  External URL Widget (Iframe)
+   ⭐ PRIMARY WIDGET
+   • global-time-picker
+     Tool:      global-time-picker
+     Resource:  ui://widget/global-time-picker
+     Browser:   http://localhost:${PORT}/mcp-use/widgets/global-time-picker
+
+   📦 ADDITIONAL WIDGETS
    • kanban-board
      Tool:      kanban-board
      Resource:  ui://widget/kanban-board
      Browser:   http://localhost:${PORT}/mcp-use/widgets/kanban-board
 
-   2️⃣  Raw HTML Widget (Direct Rendering)
    • welcome-card
      Tool:      welcome-card
      Resource:  ui://widget/welcome-card
 
-   3️⃣  Remote DOM Widget (React Components)
    • quick-poll
      Tool:      quick-poll
      Resource:  ui://widget/quick-poll
 
 📝 Usage Examples:
 
-   // External URL - Call with dynamic parameters
+   // Global Time Picker - Date & Time with Timezones
+   await client.callTool('global-time-picker')
+
+   // Kanban Board - Project Management
    await client.callTool('kanban-board', {
-     initialTasks: [{id: 1, title: 'Task 1'}],
-     theme: 'dark'
+     initialTasks: [{id: 1, title: 'Task 1'}]
    })
 
-   // Raw HTML - Access as resource
+   // Welcome Card - Server Info
    await client.readResource('ui://widget/welcome-card')
 
-   // Remote DOM - Interactive component
-   await client.callTool('quick-poll', {
-     question: 'Favorite color?',
-     options: ['Red', 'Blue', 'Green']
-   })
-
-💡 Tip: Open the Inspector UI to test all widget types interactively!
+💡 Tip: Open the Inspector UI to test all widgets interactively!
 `);
 
 // Handle graceful shutdown

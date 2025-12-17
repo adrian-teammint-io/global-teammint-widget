@@ -1,0 +1,32 @@
+{
+  "af2f9d2a-6154-44b8-9efd-6dcbc3d9d95b": {
+    "lastAccessedAt": 1765952905611,
+    "clientCapabilities": {
+      "sampling": {},
+      "elicitation": {
+        "form": {},
+        "url": {}
+      },
+      "roots": {
+        "listChanged": true
+      }
+    },
+    "clientInfo": {},
+    "protocolVersion": "unknown"
+  },
+  "b38992b8-ed17-439b-b4c2-89537b44039c": {
+    "lastAccessedAt": 1765952905561,
+    "clientCapabilities": {
+      "sampling": {},
+      "elicitation": {
+        "form": {},
+        "url": {}
+      },
+      "roots": {
+        "listChanged": true
+      }
+    },
+    "clientInfo": {},
+    "protocolVersion": "unknown"
+  }
+}
